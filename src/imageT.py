@@ -122,6 +122,6 @@ class imageT:
                 img1.putpixel(
                     nimage_l[y][x],
                     self.__img.getpixel((x, y)))
-        img1.save('../images/transformated.png')
+        img1.save('images/transformated.png')
         img1.show()
         img1.close()
