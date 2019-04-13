@@ -34,15 +34,33 @@ class imageT:
         img1.save('transformated.png')
         img1.close()
 
-    def _period(self, fct_transformation):
+    def __period(self, coord, fct_transformation):
         """
         """
-        pass
-
-    def cycle(self, fct_transformation):
+        cpt = 1
+        x, y = coord
+        res = set()
+        x1, y1 = transfo((x, y), (self.__width, self.__height))
+        while (x1, y1) != (x, y):
+            cpt += 1
+            res.add((x1, y1))
+            x1, y1 = transfo((x1, y1), (self.__width, self.__height))
+        return (res, cpt)
+            
+            
+    def __cycle_l(self, fct_transformation):
         """
         """
-        pass
+        l = [[-1 for i in range (self.__width)]\
+             for j in range (self.__height)]
+        for y in range(self.__height):
+            for x in range(self.__width):
+                if l[x][y] == -1:
+                    coords, p = _period((x, y), fct_transformation)
+                    for c in coords:
+                        x1, y1 = c
+                        l[x1][y1] = p
+        return l
         
         
     def original(self, fct_transformation):
