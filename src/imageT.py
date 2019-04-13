@@ -1,12 +1,14 @@
 """
+
 """
 
 from math import gcd
 from PIL import Image
+from transformation import *
 
 class imageT:
     """
-
+    Image processing for bijective transformation class
     """
 
     def __init__ (self, image, fct_transformation):
@@ -93,7 +95,7 @@ class imageT:
             res = imageT.lcm(res, e)
         return res
 
-    def transform(self, n):
+    def __transform(self, steps):
         """
         Apply the transformation on the pixels n times
         
@@ -104,19 +106,22 @@ class imageT:
         for y in range(self.__height):
             for x in range(self.__width):
                 tmp = (x, y)
-                nb_t = n % l[y][x]
+                nb_t = steps % l[y][x]
                 for c in range (nb_t):
                     tmp = self.__transfo(tmp, (self.__width, self.__height))
                 l[y][x] = tmp
         return l
 
-        # img1 = Image.new(self.__img.mode, self.__image.size)
-        # if self.__img.mode == 'P':
-        #     img1.putpalette(self.__img.getpalette())
-        # for y in range(self.__height):
-        #     for x in range(self.__width):
-        #         img1.putpixel((
-        #             fct_transformation((x, y), self.__img.size)),
-        #             self.__image.getpixel((x, y)))
-        # img1.save('transformated.png')
-        # img1.close()
+    def draw(self, steps):
+        nimage_l = self.__transform(steps)
+        img1 = Image.new(self.__img.mode, self.__img.size)
+        if self.__img.mode == 'P':
+            img1.putpalette(self.__img.getpalette())
+        for y in range(self.__height):
+            for x in range(self.__width):
+                img1.putpixel(
+                    nimage_l[y][x],
+                    self.__img.getpixel((x, y)))
+        img1.save('../images/transformated.png')
+        img1.show()
+        img1.close()
