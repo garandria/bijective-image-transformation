@@ -24,7 +24,7 @@ if __name__ == '__main__':
             if transfo == "boustrophedon":
                 transfo = boustrophedon
             elif transfo == "concentrique":
-                transfo == concentrique
+                transfo = concentrique
             elif transfo == "photomaton":
                 transfo = photomaton
             elif transfo == "boulanger":
