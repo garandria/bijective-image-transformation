@@ -27,7 +27,7 @@ def boulanger (coord, dim):
     
     >>> from random import shuffle
     >>> from random import randint
-    >>> lp = [p for p in range (1000) if p%2 == 0]
+    >>> lp = [p for p in range (1000) if p & 1 == 0]
     >>> shuffle(lp)
     >>> l = lp[randint(0, len(lp)-1)]
     >>> boulanger( (0, 0), (l, l) )
@@ -56,13 +56,13 @@ def boulanger (coord, dim):
     x, y = coord
     larg, haut = dim
     assert 0 <= x < larg and 0 <= y < haut, 'Invalid coordinate'
-    assert larg%2 == 0 and haut%2 == 0, 'Invalid dimention'
+    assert larg & 1 == 0 and haut & 1 == 0, 'Invalid dimention'
     # This first version only deals with dimension like (x, y)
     # such as x == y and x even
     x1, y1 = 0, 0
     x2, y2 = 0, 0
     #REPLIEMENT
-    if y%2 == 0:
+    if y & 1 == 0:
         x1, y1 = 2*x, y/2
     else:
         x1, y1 = 2*x+1, y//2
@@ -87,7 +87,7 @@ def photomaton(coord, dim):
     Exemples:
     >>> from random import shuffle
     >>> from random import randint
-    >>> lp = [p for p in range (1000) if p%2 == 0]
+    >>> lp = [p for p in range (1000) if p & 1 == 0]
     >>> shuffle(lp)
     >>> l = lp[randint(0, len(lp)-1)]
     >>> boulanger( (0, 0), (l, l) )
@@ -100,13 +100,13 @@ def photomaton(coord, dim):
     x, y = coord
     larg, haut = dim
     assert 0 <= x < larg and 0 <= y < haut, 'Invalid coordinate'
-    assert larg%2 == 0 and haut%2 == 0, 'Invalid dimension'
+    assert larg & 1 == 0 and haut & 1 == 0, 'Invalid dimension'
     x1, y1 = 0, 0
-    if x%2 == 0 and y%2 == 0:
+    if x & 1 == 0 and y & 1 == 0:
         x1, y1 = x/2, y/2
-    elif x%2 == 0 and y%2 != 0:
+    elif x & 1 == 0 and y & 1 != 0:
         x1, y1 = x/2, y//2 + larg/2
-    elif x%2 != 0 and y%2 == 0:
+    elif x & 1 != 0 and y & 1 == 0:
         x1, y1 = x//2 + haut/2, y/2
     else:
         x1, y1 = x//2 + haut/2, y//2 + larg/2
@@ -126,7 +126,7 @@ def boustrophedon(coord, dim):
     Exemples:
     >>> from random import shuffle
     >>> from random import randint
-    >>> lp = [p for p in range (1000) if p%2 == 0]
+    >>> lp = [p for p in range (1000) if p & 1 == 0]
     >>> larg = lp[randint(0, len(lp)-1)]
     >>> haut = lp[randint(0, len(lp)-1)]
     >>> dim = larg, haut
@@ -138,22 +138,23 @@ def boustrophedon(coord, dim):
     True
     >>> boustrophedon ( (larg - 1, haut - 1), dim) == (larg - 2, haut - 1)
     True
+
     """
     x, y = coord
     larg, haut = dim
     assert 0 <= x < larg and 0 <= y < haut, 'Invalid coordinate'
-    assert larg%2 == 0 and haut%2 == 0, 'Invalid dimension'
+    assert larg & 1 == 0 and haut & 1 == 0, 'Invalid dimension'
     x1, y1 = 0, 0
-    if y%2 == 0:
-        if (x == larg - 1) and (y != haut - 1) :
-            x1, y1 = x, y + 1
+    if y & 1 == 0:
+        if x == larg - 1:
+            x1, y1 = x, (y + 1) % haut
         else:
-            x1, y1 = ((x + 1)%larg, y)
+            x1, y1 = x + 1, y
     else:
-        if (x == 0) and (y != haut - 1):
-            x1, y1 = x, y + 1
+        if x == 0:
+            x1, y1 = x, (y + 1) % haut
         else:
-            x1, y1 = ( (x + larg - 1)%larg, y)
+            x1, y1 = x - 1, y
     return x1, y1
 
 def concentrique ( coord, dim ):
@@ -169,7 +170,7 @@ def concentrique ( coord, dim ):
 
     Exemples:
     >>> from random import randint
-    >>> lp = [n for n in range (1000) if n%2 == 0]
+    >>> lp = [n for n in range (1000) if n & 1 == 0]
     >>> larg = lp[randint(0, len(lp)-1)]
     >>> dim = larg, larg
     >>> concentrique( (0, 0), dim )
@@ -184,7 +185,7 @@ def concentrique ( coord, dim ):
     x, y = coord
     larg, haut = dim
     assert 0 <= x < larg and 0 <= y < haut, 'Invalid coordinate'
-    assert larg%2 == 0 and haut%2 == 0, 'Invalid dimention'
+    assert larg & 1 == 0 and haut & 1 == 0, 'Invalid dimention'
     x1, y1 = 0, 0
     if x >= larg/2 and x == y :
         x1, y1 = x - 1, y
@@ -199,3 +200,8 @@ def concentrique ( coord, dim ):
         else:
             x1, y1 = x - 1, y
     return x1, y1
+
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
