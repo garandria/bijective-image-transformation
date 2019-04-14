@@ -11,7 +11,7 @@ class imageT:
     Image processing for bijective transformation class
     """
 
-    def __init__ (self, image, fct_transformation):
+    def __init__ (self, image, fct_transformation, fname="transformated"):
         """
         Builds the object
 
@@ -23,6 +23,7 @@ class imageT:
         self.__width = self.__img.size[0]
         self.__height = self.__img.size[1]
         self.__transfo = fct_transformation
+        self.__dest = fname
 
     def __period(self, coord):
         """
@@ -89,19 +90,12 @@ class imageT:
         tmpl = self.__cycle_l()
         periods = {tmpl[y][x] for y in range(self.__height)\
                    for x in range(self.__width)}
-        print(periods)
         res = 1
         for e in periods:
             res = imageT.lcm(res, e)
         return res
-
+    
     def __transform(self, steps):
-        """
-        Apply the transformation on the pixels n times
-        
-        :return: new matrix with the transformation
-        :rtype: list
-        """
         l = self.__cycle_l()
         for y in range(self.__height):
             for x in range(self.__width):
@@ -111,7 +105,8 @@ class imageT:
                     tmp = self.__transfo(tmp, (self.__width, self.__height))
                 l[y][x] = tmp
         return l
-
+                
+    
     def draw(self, steps):
         nimage_l = self.__transform(steps)
         img1 = Image.new(self.__img.mode, self.__img.size)
@@ -122,6 +117,7 @@ class imageT:
                 img1.putpixel(
                     nimage_l[y][x],
                     self.__img.getpixel((x, y)))
-        img1.save('images/transformated.png')
+        img1.save(self.__dest + ".png")
         img1.show()
         img1.close()
+        
